@@ -22,7 +22,4 @@ class FormInput extends React.Component{
   }
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-
-  ReactDOM.render(<FormInput/>, document.getElementById('root'))
-})
+export default FormInput;
