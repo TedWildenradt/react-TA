@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 class FormInput extends React.Component{
   constructor(){
     this.state = {
-      word = ''
+      word: ''
     }
   }
 
