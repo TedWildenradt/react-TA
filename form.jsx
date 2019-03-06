@@ -1,12 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import cities from './cities';
 
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
 class FormInput extends React.Component{
-  constructor(){
+  constructor(props){
+    super(props)
     this.state = {
-      word: ''
+      word: '',
+      cities: []
     }
+  }
+
+
+  componentDidMount(){
+    const cities = []
+    fetch(endpoint)
+    .then( res => res.json())
+    .then( data => cities.push(...data))
+    .then(this.setState({cities}))
+  }
+
+  filterData(data){
+    // output = []
+    // data.forEach( obj => {
+    //   output.push([obj.city,obj.state])
+    // })
+  }
+
+  handleInput(e){
+    
+
   }
 
 
@@ -14,7 +39,7 @@ class FormInput extends React.Component{
     return(
       <div>
         <form className="search-form">
-          <input type="text" className="search" placeholder="City or State"/>
+          <input type="text" className="search" placeholder="City or State" onChange={this.handleInput} value={this.state.word}/>
 
         </form>
       </div>
