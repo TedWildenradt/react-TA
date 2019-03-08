@@ -22,11 +22,11 @@ class FormInput extends React.Component{
     .then(this.setState({cities}))
   }
 
-  filterData(data){
-    // output = []
-    // data.forEach( obj => {
-    //   output.push([obj.city,obj.state])
-    // })
+  findMatches(wordToMatch){
+    return this.state.cities.filter( city => {
+      const regex = new RegExp(wordToMatch, 'gi');
+      return city.city.match(regex) || city.state.match(regex);
+    })
   }
 
   handleInput(e){

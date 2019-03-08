@@ -161,11 +161,12 @@ function (_React$Component) {
       }));
     }
   }, {
-    key: "filterData",
-    value: function filterData(data) {// output = []
-      // data.forEach( obj => {
-      //   output.push([obj.city,obj.state])
-      // })
+    key: "findMatches",
+    value: function findMatches(wordToMatch) {
+      return this.state.cities.filter(function (city) {
+        var regex = new RegExp(wordToMatch, 'gi');
+        return city.city.match(regex) || city.state.match(regex);
+      });
     }
   }, {
     key: "handleInput",
