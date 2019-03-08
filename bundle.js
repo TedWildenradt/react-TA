@@ -163,7 +163,8 @@ function (_React$Component) {
       }).then(this.setState({
         cities: cities
       }));
-    }
+    } // Finds cities/states that match the word in state by using a regex
+
   }, {
     key: "findMatches",
     value: function findMatches(wordToMatch) {
@@ -171,22 +172,31 @@ function (_React$Component) {
         var regex = new RegExp(wordToMatch, 'gi');
         return city.city.match(regex) || city.state.match(regex);
       });
-    }
+    } // Displays the matches in list form
+
   }, {
     key: "displayMatches",
     value: function displayMatches() {
       var _this2 = this;
 
+      if (!this.state.word) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "Filter for a city"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "or a state"));
+      }
+
       var matchArray = this.findMatches(this.state.word);
       var html = matchArray.map(function (place) {
-        var regex = new RegExp(_this2.state.word, 'gi');
-        var cityName = place.city.replace(regex, "<span class=\"hl\">".concat(_this2.value, "</span>"));
-        var stateName = place.state.replace(regex, "<span class=\"hl\">".concat(_this2.value, "</span>"));
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          class: "name"
-        }, "$", cityName, ", $", stateName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          class: "population"
-        }, "$", place.population));
+        var regex = new RegExp(_this2.state.word, 'gi'); // const cityName = place.city.replace(regex, <span className="hl">{this.state.word}</span>)
+
+        var cityName = place.city; // const stateName =  place.state.replace(regex, `<span class="hl">${this.state.word}</span>`)
+
+        var stateName = place.state;
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: place.rank
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "name"
+        }, cityName, ", ", stateName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "population"
+        }, place.population));
       });
       return html;
     }
@@ -213,7 +223,7 @@ function (_React$Component) {
         value: this.state.word
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "suggestions"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "Filter for a city"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "or a state"), matches)));
+      }, matches)));
     }
   }]);
 
