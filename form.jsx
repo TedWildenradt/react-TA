@@ -11,6 +11,8 @@ class FormInput extends React.Component{
       word: '',
       cities: []
     }
+    this.findMatches = this.findMatches.bind(this)
+    this.displayMatches = this.displayMatches.bind(this)
   }
 
 
@@ -29,18 +31,39 @@ class FormInput extends React.Component{
     })
   }
 
-  handleInput(e){
-    
-
+  displayMatches(){
+    console.log(this)
+    const matchArray = findMatches(this.state.word);
+    const html = matchArray.map( place => {
+      const regex = new RegExp(this.state.word, 'gi')
+      const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`)
+      const stateName =  place.state.replace(regex, `<span class="hl">${this.value}</span>`)
+      return `
+        <li>
+          <span class="name">${cityName}, ${stateName}</span>
+          <span class="population">${place.population}</span>
+        </li>
+      `;
+      }).join('');
+    suggestions.innerHTML = html;
   }
 
+  handleUpdate(field){
+    return e => this.setState({
+      [field]: e.currentTarget.value
+    })
+  }
+  
 
   render(){
     return(
       <div>
         <form className="search-form">
-          <input type="text" className="search" placeholder="City or State" onChange={this.handleInput} value={this.state.word}/>
-
+          <input type="text" className="search" placeholder="City or State" onChange={this.handleUpdate('word')} value={this.state.word}/>
+          <ul className="suggestions">
+            <li>Filter for a city</li>
+            <li>or a state</li>
+          </ul>
         </form>
       </div>
     )

@@ -101,6 +101,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -117,9 +119,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -145,6 +147,8 @@ function (_React$Component) {
       word: '',
       cities: []
     };
+    _this.findMatches = _this.findMatches.bind(_assertThisInitialized(_this));
+    _this.displayMatches = _this.displayMatches.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -169,8 +173,29 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "handleInput",
-    value: function handleInput(e) {}
+    key: "displayMatches",
+    value: function displayMatches() {
+      var _this2 = this;
+
+      console.log(this);
+      var matchArray = findMatches(this.state.word);
+      var html = matchArray.map(function (place) {
+        var regex = new RegExp(_this2.state.word, 'gi');
+        var cityName = place.city.replace(regex, "<span class=\"hl\">".concat(_this2.value, "</span>"));
+        var stateName = place.state.replace(regex, "<span class=\"hl\">".concat(_this2.value, "</span>"));
+        return "\n        <li>\n          <span class=\"name\">".concat(cityName, ", ").concat(stateName, "</span>\n          <span class=\"population\">").concat(place.population, "</span>\n        </li>\n      ");
+      }).join('');
+      suggestions.innerHTML = html;
+    }
+  }, {
+    key: "handleUpdate",
+    value: function handleUpdate(field) {
+      var _this3 = this;
+
+      return function (e) {
+        return _this3.setState(_defineProperty({}, field, e.currentTarget.value));
+      };
+    }
   }, {
     key: "render",
     value: function render() {
@@ -180,9 +205,11 @@ function (_React$Component) {
         type: "text",
         className: "search",
         placeholder: "City or State",
-        onChange: this.handleInput,
+        onChange: this.handleUpdate('word'),
         value: this.state.word
-      })));
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "suggestions"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "Filter for a city"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "or a state"))));
     }
   }]);
 
